@@ -31,6 +31,8 @@ const buttonStyle ={
 }
 
 function Signup() {
+    
+
     return (
         <Container maxWidth="sm">
             <Paper elevation={4} sx={paperStyles}>
@@ -38,15 +40,15 @@ function Signup() {
 
                 <Box sx={gridStyle}>
                     <Grid container={true} spacing={4} >
-                        <Grid item xs={6}>
+                        {/* <Grid item xs={6}>
                             <TextField sx={textFieldStyle}  label="First Name" variant="outlined" />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField sx={textFieldStyle}  label="Last Name" variant="outlined" />
-                        </Grid>
-                        {/* <Grid item xs={8}>
-                            <TextField   label="Username" variant="outlined" />
                         </Grid> */}
+                        <Grid item xs={8}>
+                            <TextField   label="Username" variant="outlined" />
+                        </Grid>
                         <Grid item xs={7}>
                             <TextField sx={textFieldStyle}  label="Email" variant="outlined" />
                         </Grid>
