@@ -44,15 +44,15 @@ function Signup() {
                         <Grid item xs={6}>
                             <TextField sx={textFieldStyle}  label="Last Name" variant="outlined" />
                         </Grid>
-                        <Grid item xs={8}>
+                        {/* <Grid item xs={8}>
                             <TextField   label="Username" variant="outlined" />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={7}>
                             <TextField sx={textFieldStyle}  label="Email" variant="outlined" />
                         </Grid>
-                        <Grid item xs={7}>
+                        {/* <Grid item xs={7}>
                             <TextField sx={textFieldStyle}  label="Mobile" variant="outlined" />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={6}>
                             <TextField sx={textFieldStyle}  type={'password'} label="Password" variant="outlined" />
                         </Grid>
