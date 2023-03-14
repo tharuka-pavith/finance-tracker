@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -7,15 +7,38 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 //import Grid from '@mui/material/Grid';
 
-function NewBook() {
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+import { store } from '../redux/store';
+
+function NewBook() {
+    const [bookName, setBookName] = useState('');
+    const user_id = store.getState()._id;
+
+    const navigate = useNavigate();
+
+    const postBook = () =>{
+        axios.post(`http://localhost:3001/api/post/book`, {
+                "name": bookName,
+                "user_id": user_id 
+            }).then((res) =>{
+                console.log(res.data);
+                navigate("/dashboard");
+            }).catch((error)=>{
+                console.log(error);
+            });
+    }
     return (
         <Container maxWidth="lg">
             <Paper elevation={0} sx={{ mt: '120px', width: '100%', mx: 'auto' }}>
                 <Stack spacing={1}>
                     <Typography variant='h4' textAlign='left' fontWeight="medium" sx={{ my: '10px' }}>Create New Book</Typography>
-                    <TextField label="Book Name" variant="outlined" sx={{ width: '50%' }} />
-                    <Button size={'large'} variant="contained" color='success' sx={{width:'10%'}}>Add</Button>
+                    <TextField value={bookName} label="Book Name" variant="outlined" sx={{ width: '50%' }}
+                    onChange={(e)=>{
+                        setBookName(e.target.value);
+                    }} />
+                    <Button size={'large'} variant="contained" color='success' sx={{width:'10%'}} onClick={postBook}>Add</Button>
                 </Stack>
             </Paper>
         </Container >
