@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
@@ -8,6 +8,13 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+
+//Date picker
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import dayjs from 'dayjs';
 
 const paperStyles = {
     margin: '50px',
@@ -29,6 +36,8 @@ const buttonStyle = {
 }
 
 function CashOut() {
+    const [entryDate, setEntryDate] = useState('');
+    const [entryTime, setEntryTime] = useState('');
     return (
         <Container maxWidth='sm'>
             <Paper variant='outlined' sx={paperStyles}>
@@ -36,10 +45,18 @@ function CashOut() {
                 <Box sx={gridStyle}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                        <TextField id="outlined-basic" label="Date" variant="outlined" />
+                        {/* <TextField id="outlined-basic" label="Date" variant="outlined" /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker value={entryDate} 
+                                onChange={(e) => setEntryDate(e)} />
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={6}>
-                        <TextField id="outlined-basic1" label="Time" variant="outlined" />
+                        {/* <TextField id="outlined-basic1" label="Time" variant="outlined" /> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopTimePicker value={entryTime}
+                                onChange={(e) => setEntryTime(e)}/>
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12}>
                         <TextField id="outlined-basic2" label="Amount" variant="outlined" />
