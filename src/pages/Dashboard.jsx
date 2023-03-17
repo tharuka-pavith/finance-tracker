@@ -9,12 +9,12 @@ import AppDrawer from '../components/AppDrawer';
 import { useSelector } from "react-redux";
 
 function Dashboard() {
-    const name = useSelector(state => state.login.name)
+    
     return (
         <Grid container>
             <Grid item xs={12}>
                 <Box>
-                    <ApplicationBar username={name}/>
+                    <ApplicationBar/>
                 </Box>
             </Grid>
 
@@ -33,4 +33,4 @@ function Dashboard() {
     );
 }
 
-export default memo(Dashboard);
+export default Dashboard;
