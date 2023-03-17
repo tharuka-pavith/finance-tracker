@@ -9,6 +9,15 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
+//Date picker
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+
+
+import { useNavigate } from 'react-router-dom';
+
 const paperStyles = {
     margin: '50px',
     borderRadius: '10px',
@@ -29,6 +38,8 @@ const buttonStyle = {
 }
 
 function CashIn() {
+    const navigate = useNavigate();
+
     return (
         <Container maxWidth='sm'>
             <Paper variant='outlined' sx={paperStyles}>
@@ -36,26 +47,34 @@ function CashIn() {
                 <Box sx={gridStyle}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                        <TextField id="outlined-basic" label="Date" variant="outlined" />
+                            {/* <TextField id="outlined-basic" label="Date" variant="outlined" /> */}
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker />
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={6}>
-                        <TextField id="outlined-basic1" label="Time" variant="outlined" />
+                            {/* <TextField id="outlined-basic1" label="Time" variant="outlined" /> */}
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopTimePicker />
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12}>
-                        <TextField id="outlined-basic2" label="Amount" variant="outlined" />
+                            <TextField id="outlined-basic2" label="Amount" variant="outlined" />
                         </Grid>
                         <Grid item xs={12}>
-                        <TextField fullWidth id="outlined-basic2" label="Description" variant="outlined" />
+                            <TextField fullWidth id="outlined-basic2" label="Description" variant="outlined" />
                         </Grid>
                         <Grid item xs={12}>
-                        <Typography color='success' variant='subtitle2' textAlign={'left'} fontWeight="medium" sx={{ my: '10px' }}>Bill (Image): </Typography>
-                        <Button variant='outlined'>Upload</Button>
+                            <Typography color='success' variant='subtitle2' textAlign={'left'} fontWeight="medium" sx={{ my: '10px' }}>Bill (Image): </Typography>
+                            <Button variant='outlined'>Upload</Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <Button href='/dashboard/cashbook' size={'large'} sx={buttonStyle} variant="outlined" color='error'>Cancel</Button>
+                            <Button size={'large'} sx={buttonStyle} variant="outlined" color='error'
+                                onClick={() => navigate("/dashboard/cashbook")}>Cancel</Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <Button href='/dashboard/cashbook' size={'large'} sx={buttonStyle} variant="contained" color='success'>Save</Button>
+                            <Button size={'large'} sx={buttonStyle} variant="contained" color='success'
+                                onClick={() => navigate("/dashboard/cashbook")}>Save</Button> {/*TODO: handle onClick => http POST */}
                         </Grid>
                     </Grid>
                 </Box>
