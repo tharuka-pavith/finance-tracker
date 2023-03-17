@@ -14,7 +14,7 @@ import { store } from '../redux/store';
 
 function NewBook() {
     const [bookName, setBookName] = useState('');
-    const user_id = store.getState()._id;
+    const user_id = store.getState().login._id;
 
     const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ function NewBook() {
                 "user_id": user_id 
             }).then((res) =>{
                 console.log(res.data);
-                navigate("/dashboard");
+                navigate("/dashboard/");
             }).catch((error)=>{
                 console.log(error);
             });
