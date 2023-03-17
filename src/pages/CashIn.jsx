@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
@@ -14,6 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import dayjs from 'dayjs';
 
 
 import { useNavigate } from 'react-router-dom';
@@ -40,6 +41,10 @@ const buttonStyle = {
 function CashIn() {
     const navigate = useNavigate();
 
+    const [entryDate, setEntryDate] = useState('');
+    const [entryTime, setEntryTime] = useState('');
+
+    const today = dayjs();
     return (
         <Container maxWidth='sm'>
             <Paper variant='outlined' sx={paperStyles}>
@@ -49,13 +54,15 @@ function CashIn() {
                         <Grid item xs={6}>
                             {/* <TextField id="outlined-basic" label="Date" variant="outlined" /> */}
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker />
+                                <DatePicker value={entryDate} 
+                                onChange={(e) => setEntryDate(e)} />
                             </LocalizationProvider>
                         </Grid>
                         <Grid item xs={6}>
                             {/* <TextField id="outlined-basic1" label="Time" variant="outlined" /> */}
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DesktopTimePicker />
+                                <DesktopTimePicker value={entryTime}
+                                onChange={(e) => setEntryTime(e)}/>
                             </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12}>
@@ -74,7 +81,12 @@ function CashIn() {
                         </Grid>
                         <Grid item xs={6}>
                             <Button size={'large'} sx={buttonStyle} variant="contained" color='success'
-                                onClick={() => navigate("/dashboard/cashbook")}>Save</Button> {/*TODO: handle onClick => http POST */}
+                                onClick={() =>{ 
+                                    //navigate("/dashboard/cashbook");
+                                    const date = new Date(entryDate);
+                                    const time = new Date(entryTime);
+                                    
+                                    }}>Save</Button> {/*TODO: handle onClick => http POST */}
                         </Grid>
                     </Grid>
                 </Box>
