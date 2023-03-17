@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Box from '@mui/material/Box';
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 
 /*------------------Icons-------------------*/
 import CreateIcon from '@mui/icons-material/Create';
@@ -16,95 +16,69 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HistoryIcon from '@mui/icons-material/History';
 
 
-// const items = [
-//     {heading: "Create New Task", icon: {<CreateIcon/>}}, 
-//     {heading: "My Tasks"}, 
-//     {heading:"Assigned Tasks"}, 
-//     {heading:"Task History"}, 
-//     {heading:"Admin Panel"}
-// ];
+import axios from 'axios';
+import { useEffect, useState } from "react";
 
-function createList(item) {
+import { store } from '../redux/store';
+import { useDispatch } from "react-redux";
+import { storeBooks, storeCurrentBook } from '../redux/booksSlice';
 
-    return (
-        <ListItemButton component="a" href="menu-options" sx={{ maxHeight: "4rem" }}>
-            <ListItemText primary={item} />
-        </ListItemButton>
-    );
-}
 
 function AppDrawer() {
+    const [bookList, setBookList] = useState([]);
+    const user_id = store.getState().login._id;
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get(`http://localhost:3001/api/get/book/${user_id}`)
+            .then((response) => {
+                var bookArray = [];
+                (response.data).forEach(element => {
+
+                    bookArray.push({ key: element._id, name: element.name, id: element._id })
+                });
+                setBookList(bookArray);
+                dispatch(
+                    storeBooks({
+                        books: bookArray
+                    })
+                )
+            })
+            .catch((error) => console.log(error));
+    }, [user_id]);
 
     return (
-
-        // <Paper sx={{ width: 200, maxWidth: '100%', borderRadius: 0 }} elevation={1}>
-        //   <MenuList>
-        //     <MenuItem>
-        //       <Typography variant="subtitle1"><Box sx={{textAlign: 'center'}}>Create new Task</Box></Typography>
-        //     </MenuItem>
-        //     <Divider/>
-        //     <MenuItem>
-        //       <Typography variant="subtitle1">My Approvals</Typography>
-        //     </MenuItem>
-        //     <Divider/>
-        //     <MenuItem>
-        //       <Typography variant="subtitle1">History</Typography>
-        //     </MenuItem>
-        //     <Divider/>
-        //     <MenuItem>
-        //       <Typography variant="subtitle1">Admin</Typography>
-        //     </MenuItem>
-        //   </MenuList>
-        // </Paper>
-
         <Box>
             <Drawer variant="permanent" open sx={{ width: '100%' }}>
                 <Toolbar variant="regular" sx={{ marginTop: '30px' }} />
-                {/* {items.map(createList)} */}
                 <ListItem disablePadding>
-                        <ListItemButton component="a" href="/dashboard/newtask" sx={{ height: "4rem" }}>
-                            <ListItemText primary="New Task" />
-                            <ListItemIcon>
-                                <CreateIcon sx={{ marginX: '30%' }} />
-                            </ListItemIcon>
-                        </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton component="a" href="/dashboard/mytasks" sx={{ height: "4rem" }}>
-                        <ListItemText primary="My Tasks" />
+                    <ListItemButton color="success" component="a" to="/dashboard/newbook" sx={{ height: "4rem" }}>
+                        <ListItemText primary="New Book" />
                         <ListItemIcon>
-                            <TaskIcon sx={{ marginX: '30%' }} />
+                            <CreateIcon sx={{ marginX: '30%' }} />
                         </ListItemIcon>
                     </ListItemButton>
                 </ListItem>
 
-                <ListItem disablePadding>
-                    <ListItemButton component="a" href="/dashboard/todotasks" sx={{ height: "4rem" }}>
-                        <ListItemText primary="Tasks" />
-                        <ListItemIcon>
-                            <AssignmentTurnedInIcon sx={{ marginX: '30%' }} />
-                        </ListItemIcon>
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton component="a" href="/dashboard/history" sx={{ height: "4rem" }}>
-                        <ListItemText primary="History" />
-                        <ListItemIcon>
-                            <HistoryIcon sx={{ marginX: '30%' }} />
-                        </ListItemIcon>
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton component="a" href="/dashboard/admin" sx={{ height: "4rem" }}>
-                        <ListItemText primary="Admin" />
-                        <ListItemIcon>
-                            <AdminPanelSettingsIcon sx={{ marginX: '30%' }} />
-                        </ListItemIcon>
-                    </ListItemButton>
-                </ListItem>
+                {bookList.map((element) => {
+                    console.log('render component');
+                    return (
+                        <ListItemButton to='/dashboard/cashbook' id={element.id} key={element.key} component="a" sx={{ maxHeight: "4rem" }}  
+                        onClick={ async ()=>{
+                            //console.log(element.id);
+                            await dispatch(
+                                storeCurrentBook(
+                                    {currentBook : element.id}
+                                )
+                            );
+                            console.log(element.id);
+                            //navigate("/dashboard/cashbook");
+                        }}>
+                            <ListItemText primary={element.name} />
+                        </ListItemButton>);
+                })}
 
             </Drawer>
         </Box>
