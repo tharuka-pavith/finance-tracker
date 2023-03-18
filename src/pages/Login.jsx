@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
@@ -14,13 +14,26 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { storeLogin } from '../redux/loginSlice';
 
+import loginImage from '../imgs/login.jpg';
+const useStyles = {
+    position:'relative',
+    backgroundImage: `url(${loginImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "78vh",
+    marginTop: 0,
+    width: '50%',
+    left: '40%' 
+    // height: 'auto'
+}
 
 const paperStyles = {
     margin: '50px',
     borderRadius: '10px',
     width: '75%',
     padding: "5px",
-    mt: '200px'
+    mt: '100px',
+    marginLeft: '20%'
 }
 
 const gridStyle = {
@@ -42,18 +55,19 @@ function Login() {
     const navigate = useNavigate(); //for programmatical navigation
     const dispatch = useDispatch(); //redux dispatch
 
+    
     const post = () => {
         // console.log(username);
         // console.log(password);
         axios.get(`http://localhost:3001/api/get/user/${username}/${password}`)
-            .then((response) => {
+            .then(async (response) => {
 
                 if (response.data[0] === undefined) {
-                    console.log("User doesn't exist");
-                    alert("User doesn't exist");
+                    //console.log("User doesn't exist");
+                    alert("Invalid username or password!");
                 } else {
                     console.log(response.data[0]);
-                    dispatch(
+                    await dispatch(
                         storeLogin({
                             name: response.data[0].name,
                             email: response.data[0].email,
@@ -70,15 +84,16 @@ function Login() {
     }
 
     return (
-        <Container maxWidth='sm'>
+        <Paper elevation={0} sx={{margin: "7% 1% 1% 1% ", padding: "1%"}}>
+        <Container maxWidth='sm' sx={{position: 'absolute', width: '100%', zIndex:1}}>
             <Paper elevation={10} sx={paperStyles}>
-                <Typography variant='h4' textAlign={'center'} fontWeight="medium" sx={{ my: '10px' }}>Login</Typography>
+                <Typography variant='h4' textAlign={'center'} fontWeight="medium" color='#112D4E' sx={{ my: '10px' }}>Login</Typography>
                 <Box sx={gridStyle}>
 
                     <Stack spacing={3} alignItems="center">
-                        <Box><TextField size='small' label="Username" variant="outlined" onChange={(e) => { setUsername(e.target.value) }} /></Box>
+                        <Box><TextField value={username} size='small' label="Username" variant="outlined" onChange={(e) => { setUsername(e.target.value) }} /></Box>
 
-                        <Box><TextField size='small' label="Password" type="password" variant="outlined" onChange={(e) => { setPassword(e.target.value) }} /></Box>
+                        <Box><TextField value={password} size='small' label="Password" type="password" variant="outlined" onChange={(e) => { setPassword(e.target.value) }} /></Box>
                     </Stack>
 
                     <Stack sx={{ mt: '20px' }} direction='row' spacing={2} alignItems="center" justifyContent="center">
@@ -89,8 +104,9 @@ function Login() {
                 </Box>
             </Paper>
         </Container>
-
+        <Box style={useStyles}></Box>
+        </Paper>
     );
 }
 
-export default memo(Login);
+export default Login;
