@@ -36,7 +36,6 @@ function AppDrawer() {
             .then((response) => {
                 var bookArray = [];
                 (response.data).forEach(element => {
-
                     bookArray.push({ key: element._id, name: element.name, id: element._id })
                 });
                 setBookList(bookArray);
@@ -54,7 +53,8 @@ function AppDrawer() {
             <Drawer variant="permanent" open sx={{ width: '100%' }}>
                 <Toolbar variant="regular" sx={{ marginTop: '30px' }} />
                 <ListItem disablePadding>
-                    <ListItemButton color="success" component="a" to="/dashboard/newbook" sx={{ height: "4rem" }}>
+                    <ListItemButton color="success" component="a" sx={{ height: "4rem" }}
+                    onClick={()=>navigate("/dashboard/newbook")}>
                         <ListItemText primary="New Book" />
                         <ListItemIcon>
                             <CreateIcon sx={{ marginX: '30%' }} />
@@ -63,9 +63,9 @@ function AppDrawer() {
                 </ListItem>
 
                 {bookList.map((element) => {
-                    console.log('render component');
+                    //console.log('render component');
                     return (
-                        <ListItemButton to='/dashboard/cashbook' id={element.id} key={element.key} component="a" sx={{ maxHeight: "4rem" }}  
+                        <ListItemButton id={element.id} key={element.key} component="a" sx={{ maxHeight: "4rem" }}  
                         onClick={ async ()=>{
                             //console.log(element.id);
                             await dispatch(
@@ -74,7 +74,7 @@ function AppDrawer() {
                                 )
                             );
                             console.log(element.id);
-                            //navigate("/dashboard/cashbook");
+                            navigate("/dashboard/cashbook");
                         }}>
                             <ListItemText primary={element.name} />
                         </ListItemButton>);
