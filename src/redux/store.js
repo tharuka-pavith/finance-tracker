@@ -3,8 +3,9 @@
  * It creates the store which holds our state, combines our reducers
  */
 
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import loginReducer from './loginSlice';
+import booksReducer from './booksSlice';
 
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -15,7 +16,13 @@ const persistConfig = {
     storage,
   }
 
-const persistedReducer = persistReducer(persistConfig, loginReducer);
+const rootReducer = combineReducers({
+  login: loginReducer,
+  books: booksReducer,
+});  
+
+// const persistedReducer = persistReducer(persistConfig, loginReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
     reducer: persistedReducer,
