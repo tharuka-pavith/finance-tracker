@@ -3,7 +3,8 @@ import React from 'react';
 import { Link, Outlet } from "react-router-dom"
 
 import ApplicationBar from '../components/ApplicationBar';
-import Welcome from './Welcome';
+//import Welcome from './Welcome';
+
 
 function Home(){
     return(

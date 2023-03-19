@@ -24,6 +24,7 @@ const useStyles = {
 }
 
 const paperStyles = {
+    backgroundColor: '#F9F7F7',
     margin: "32px",
     marginTop: "90px",
     borderRadius: '10px',
@@ -88,19 +89,19 @@ function Signup() {
                             <TextField sx={textFieldStyle}  label="Last Name" variant="outlined" />
                         </Grid> */}
                         <Grid item xs={8}>
-                            <TextField label="Username" variant="outlined" onChange={(e) => setUsername(e.target.value)} />
+                            <TextField required label="Username" variant="outlined" onChange={(e) => setUsername(e.target.value)} />
                         </Grid>
                         <Grid item xs={7}>
-                            <TextField sx={textFieldStyle} label="Email" variant="outlined" onChange={(e) => setEmail(e.target.value)} />
+                            <TextField required sx={textFieldStyle} label="Email" variant="outlined" onChange={(e) => setEmail(e.target.value)} />
                         </Grid>
                         {/* <Grid item xs={7}>
                             <TextField sx={textFieldStyle}  label="Mobile" variant="outlined" />
                         </Grid> */}
                         <Grid item xs={6}>
-                            <TextField sx={textFieldStyle} type={'password'} label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)} />
+                            <TextField required sx={textFieldStyle} type={'password'} label="Password" variant="outlined" onChange={(e) => setPassword(e.target.value)} />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField sx={textFieldStyle} type={'password'} label="Confirm Password" variant="outlined" onChange={(e) => setPasswordConfirm(e.target.value)} />
+                            <TextField required sx={textFieldStyle} type={'password'} label="Confirm Password" variant="outlined" onChange={(e) => setPasswordConfirm(e.target.value)} />
                         </Grid>
                         <Grid item xs={6}>
                             <Button size={'large'} sx={buttonStyle} variant="contained" color='success' onClick={postData}>Signup</Button>

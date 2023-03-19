@@ -48,8 +48,8 @@ const columns = [
 function createRow(data){
     var dateObj = new Date(data.date);
     console.log(dateObj);
-    var date = `${dateObj.getFullYear()} - ${dateObj.getMonth()+1} - ${dateObj.getDate()-2}`;
-    var time = `${dateObj.getHours()}:${dateObj.getMinutes()}`;
+    var date = ` ${dateObj.toLocaleDateString()}`;
+    var time = `${dateObj.toLocaleTimeString()}`;
     var amount = data.amount;
     var description = data.remark;
     var type = data.type? "cash In" : "cash Out";
@@ -79,6 +79,13 @@ function CashBook() {
     const navigate = useNavigate();
 
     const [rows, setRows] = useState([]);
+    const [totalCashIn, setTotalCashIn] = useState(0);
+    const [totalCashOut, setTotalCashOut] = useState(0);
+
+    
+    /**Creating table data */
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const bookId = store.getState().books.currentBook;
     const bookObj = store.getState().books.books.find((obj) => obj.id === bookId); //get book object (required in line 87)
@@ -86,18 +93,23 @@ function CashBook() {
     useEffect(() => {
         axios.get(`http://localhost:3001/api/get/entry/${bookId}`) //get all entries relevant to bookId
             .then((response) => {
-                // console.log(response.data)
+                console.log(response.data)
                 //setRows(response.data)
-                const arr = response.data.map((e) => {return createRow(e)})
+                const arr = response.data.map((e) => {return createRow(e)});
+
+                var totalIn = 0;
+                var totalOut = 0;
+                arr.forEach((element)=>{
+                    (element.type === "cash In")? (totalIn+=element.amount): (totalOut+=element.amount);
+                });
+                setTotalCashIn(totalIn);
+                setTotalCashOut(totalOut);
                 setRows(arr.reverse());
 
             })
             .catch((error) => console.log(error));
     }, [bookId]);
 
-    /**Section : Creating table */
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -118,14 +130,14 @@ function CashBook() {
                     <Stack direction='row' spacing={5}>
                         <Stack >
                         <Paper variant='outlined' sx={{padding: '5%', margin: '5%', width: '200px'}} >
-                            <Typography variant='subtitle1'>CashIn</Typography>
-                            <Typography variant='h5'>100, 000</Typography>
+                            <Typography variant='subtitle1'>Total CashIn</Typography>
+                            <Typography variant='h5'>{totalCashIn}</Typography>
                         </Paper>
                         </Stack>
                         <Stack >
                         <Paper variant='outlined' sx={{padding: '5%', margin: '5%', width: '200px'}}>
-                            <Typography variant='subtitle1'>CashOut</Typography>
-                            <Typography variant='h5'>20, 000</Typography>
+                            <Typography variant='subtitle1'>Total CashOut</Typography>
+                            <Typography variant='h5'>{totalCashOut}</Typography>
                         </Paper>
                         </Stack>
                         <Stack>

@@ -57,7 +57,7 @@ function CashOut() {
     const postData = () => {
         const date = new Date(entryDate);
         const time = new Date(entryTime);
-        const finalDate = new Date(date.getFullYear(), date.getMonth(), date.getDay(), time.getHours(), time.getMinutes());
+        const finalDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes());
         console.log(finalDate);
         axios.post(`http://localhost:3001/api/post/entry`, {
                 "book_id": bookId,

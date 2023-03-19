@@ -28,6 +28,7 @@ const useStyles = {
 }
 
 const paperStyles = {
+    backgroundColor: '#F9F7F7',
     margin: '50px',
     borderRadius: '10px',
     width: '75%',
