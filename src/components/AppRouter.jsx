@@ -11,6 +11,7 @@ import NewBook from "../pages/NewBook";
 import CashBook from "../pages/Cashbook";
 import CashIn from "../pages/CashIn";
 import CashOut from '../pages/CashOut';
+import CreateBook from "../pages/CreateBook";
 
 function AppRouter() {
     return (
@@ -23,6 +24,7 @@ function AppRouter() {
             </Route>
 
             <Route path="/dashboard" element={<Dashboard />} >
+                <Route path="/dashboard/" element={<CreateBook />} />
                 <Route path="/dashboard/newbook/" element={<NewBook />} />
                 <Route path="/dashboard/cashbook/" element={<CashBook />} />
                 <Route path="/dashboard/cash-in/" element={<CashIn />} />
